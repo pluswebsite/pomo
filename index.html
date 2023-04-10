@@ -155,5 +155,14 @@ pomo.circle = function(val){
 	document.getElementById("time").setAttribute("aria-valuenow",val)
 	document.getElementById("time").setAttribute("style", "--value:" + val)
 }
+var times = {};
+times.simple = [25, 5, 25, 5, 25, 5];
+times.actual;
+times.actualn = 0;
+times.run = function(q){
+	times.actual = q;
+	pomo.start(times[q][0])
+	//define pomo.end function
+}
 </script> 
 </html>
