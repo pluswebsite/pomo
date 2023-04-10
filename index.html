@@ -1,4 +1,8 @@
 <html>
+	<head>
+		<title>Pomo - a simple but powerful pomodoro</title>
+		<link rel="icon" src="'https://cdn-icons-png.flaticon.com/512/7329/7329721.png">
+	</head>
 <body>
 	<div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="--value:0" id="time"><input max="60" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" type="text" inputmode="numeric" id="m" placeholder="00" min="0">:<input oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" type="text" inputmode="numeric" id="s" placeholder="00" min="0" max="60"></div><br><br><button id="butt" onclick="pomo.start()"><i class="fa fa-play fa-beat-fade"></i></button>
 </body>
