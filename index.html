@@ -1,0 +1,155 @@
+<html>
+<body>
+	<div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="--value:0" id="time"><input max="60" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" type="text" inputmode="numeric" id="m" placeholder="00" min="0">:<input oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" type="text" inputmode="numeric" id="s" placeholder="00" min="0" max="60"></div><br><br><button id="butt" onclick="pomo.start()"><i class="fa fa-play fa-beat-fade"></i></button>
+</body>
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap');
+	@keyframes growProgressBar {
+  0%, 33% { --pgPercentage: 0; }
+  100% { --pgPercentage: var(--value); }
+}
+
+@property --pgPercentage {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+div[role="progressbar"] {
+  --size: 20rem;
+  --fg: #369;
+  --bg: #def;
+  --pgPercentage: var(--value);
+display: flex;
+justify-content: center;
+align-items: center;
+  animation: growProgressBar 3s 1 forwards;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: 
+    radial-gradient(closest-side, white 80%, transparent 0 99.9%, white 0),
+    conic-gradient(var(--fg) calc(var(--pgPercentage) * 1%), var(--bg) 0)
+    ;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: calc(var(--size) / 5);
+  color: var(--fg);
+}
+
+div[role="progressbar"]::before {
+  counter-reset: percentage var(--value);
+}
+
+/* demo */
+body {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+	body{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		height: 100%;
+		font-family: 'Comfortaa', cursive;
+	}
+	#m, #s{
+		all: unset;
+		text-align: center;
+		display: inline;
+		width: 40px;
+		font-size: 30px;
+		font-family: 'Comfortaa', cursive;
+	}
+	#time{
+		font-size: 30px;	
+	}
+	#butt{
+		all: unset;
+		background-color: lightblue;
+		border-radius: 100%;
+		width: 50px;
+		height: 50px;
+		text-align: center;
+	}
+</style>
+<script src="https://kit.fontawesome.com/0494e38872.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+window.onload = function(){
+if(localStorage.noti == undefined){
+	Notification.requestPermission().then(function(result) {
+  pomo.noti = eval("'" + result + "' == 'granted'");
+  localStorage.noti = eval("'" + result + "' == 'granted'");
+})
+}
+else{
+	pomo.noti = localStorage.noti;
+}
+}
+function minutePass(){
+	if(document.getElementById("m").value <= -1){document.getElementById("m").value = "";} else if(document.getElementById("m").value >= 61){document.getElementById("m").value = document.getElementById("m").value.slice(1)	;}
+}
+function sPass(){
+	if(document.getElementById("s").value <= -1){document.getElementById("s").value = "";} else if(document.getElementById("s").value >= 61){document.getElementById("s").value = document.getElementById("s").value.slice(1)	;}
+}
+document.getElementById("m").addEventListener("keyup",minutePass)
+document.getElementById("s").addEventListener("keyup",sPass)
+var pomo = {};
+pomo.seconds = 0;
+pomo.interval ;
+pomo.start = function() {
+if(!eval("document.getElementById('m').value <= 0") || !eval("document.getElementById('s').value <= 0")){
+document.getElementById("butt").innerHTML = '<i class="fa fa-stop fa-beat-fade"></i>'
+	document.getElementById("butt").setAttribute("onclick","pomo.stop()")
+   pomo.mins = document.getElementById("m").value;
+pomo.allseconds = parseInt(document.getElementById("s").value) || 0;
+pomo.allminutes = document.getElementById("m").value || 0;
+pomo.total = pomo.allseconds + pomo.allminutes*60;
+pomo.seconds = document.getElementById("s").value || 0;
+   pomo.seconds = pomo.mins*60 + parseInt(pomo.seconds);     
+   pomo.interval = setInterval(function() {
+ 
+        pomo.seconds--;
+	if(pomo.seconds <= 60){
+		document.getElementById("s").value = pomo.seconds;
+		document.getElementById("m").value = "0";
+	} else{
+		document.getElementById("s").value = pomo.seconds % 60;
+		document.getElementById("m").value = Math.floor(pomo.seconds / 60);
+	}
+	pomo.circle(100/pomo.total*pomo.seconds)
+        if(!pomo.seconds){
+             pomo.stop()
+	pomo.end()
+        }
+   },1000)
+}
+}
+pomo.end = function(){
+	Swal.fire({
+  title: 'Congrats!',
+  text: 'You finished the study time!!',
+  icon: 'success',
+  confirmButtonText: 'Go on'
+})
+if(pomo.noti){
+	var img = 'https://cdn-icons-png.flaticon.com/512/7329/7329721.png';
+	var text = 'Congrats, your countdown of ' + pomo.allminutes + ':' + pomo.allseconds + ' has finished!!';
+	var notification = new Notification('Finished pomodoro.', { body: text, icon: img });
+}
+}
+pomo.stop = function(){
+	clearInterval(pomo.interval)
+	document.getElementById("butt").innerHTML = '<i class="fa fa-play fa-beat-fade"></i>'
+	document.getElementById("butt").setAttribute("onclick","pomo.start()")
+}
+pomo.circle = function(val){
+	document.getElementById("time").setAttribute("aria-valuenow",val)
+	document.getElementById("time").setAttribute("style", "--value:" + val)
+}
+</script> 
+</html>
