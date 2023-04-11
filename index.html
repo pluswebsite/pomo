@@ -165,12 +165,14 @@ times.actual;
 times.actualn = 0;
 times.run = function(q){
 	times.actual = q;
-	pomo.start(times[q][0])
+	document.getElementById("m").value = times[q][0];
+	pomo.start()
 	//define pomo.end function
 	pomo.end = function(){
 		if(!eval("times[times.actual].length <= times.actualn")){
 			times.actualn = times.actualn + 1;
-			pomo.start(times[times.actual][times.actualn])
+			document.getElementById("m").value = times[times.actual][times.actualn];
+			pomo.start()
 		}
 	}
 }
