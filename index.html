@@ -164,7 +164,7 @@ times.run = function(){
 	pomo.start()
 	//define pomo.end function
 	pomo.end = function(){
-		if(!eval("times[times.actual].length <= times.actualn")){
+		if(!eval("times.actual.length <= times.actualn")){
 			times.actualn = times.actualn + 1;
 			document.getElementById("m").value = times.actual[times.actualn];
 			pomo.start()
