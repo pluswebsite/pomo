@@ -4,6 +4,10 @@
 		<link rel="icon" src="https://cdn-icons-png.flaticon.com/512/7329/7329721.png">
 	</head>
 <body>
+	<select name="times" id="times">
+		<option for="times" value=""></option>
+		<option for="times" value="simple">SIMPLE</option>
+	</select><button onclick="times.start(document.getElementById('times').value)"
 	<div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="--value:0" id="time"><input max="60" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" type="text" inputmode="numeric" id="m" placeholder="00" min="0">:<input oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" type="text" inputmode="numeric" id="s" placeholder="00" min="0" max="60"></div><br><br><button id="butt" onclick="pomo.start()"><i class="fa fa-play fa-beat-fade"></i></button>
 </body>
 <style>
@@ -163,6 +167,12 @@ times.run = function(q){
 	times.actual = q;
 	pomo.start(times[q][0])
 	//define pomo.end function
+	pomo.end = function(){
+		if(!eval("times[times.actual].length <= times.actualn")){
+			times.actualn = times.actualn + 1;
+			pomo.start(times[times.actual][times.actualn])
+		}
+	}
 }
 </script> 
 </html>
