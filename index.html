@@ -7,7 +7,7 @@
 	<select name="times" id="times">
 		<option for="times" value=""></option>
 		<option for="times" value="simple">SIMPLE</option>
-	</select><button onclick="times.start(document.getElementById('times').value)"><i class="fa fa-arrow-right fa-beat-fade"></i></button>
+	</select><button onclick="times.run(document.getElementById('times').value)"><i class="fa fa-arrow-right fa-beat-fade"></i></button>
 	<div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="--value:0" id="time"><input max="60" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" type="text" inputmode="numeric" id="m" placeholder="00" min="0">:<input oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0');" type="text" inputmode="numeric" id="s" placeholder="00" min="0" max="60"></div><br><br><button id="butt" onclick="pomo.start()"><i class="fa fa-play fa-beat-fade"></i></button>
 </body>
 <style>
